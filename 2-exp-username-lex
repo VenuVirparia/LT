@@ -1,24 +1,34 @@
 %{
-#include<stdio.h>
-#include<stdlib.h>
-}%
+#include <stdio.h>
+#include <stdlib.h>
+%}
 
 %%
-  "username" {
-              char *user = getenv("USER");
-              if(user)
-                printf("Logged in user: %s\n", user);
-              else
-                printf("Unable to retrive username");
-            }
-./\n  {//Ignore other character and new line}
-%%
-
-int yywrap(){
-printf("Type username to get current logged in user: ");
-yylex();
-return 0;
+username {
+    char *user = getenv("USER");
+    if(user)
+        printf("Logged in user: %s\n", user);
+    else
+        printf("Unable to retrieve username\n");
 }
+
+// Ignore whitespace, tabs, and newlines
+[ \t\n]+  { /* skip */ }
+
+// Catch all unknown input
+.         { printf("Unknown input: %s\n", yytext); }
+%%
+
+int main() {
+    printf("Type 'username' to get current logged-in user (Ctrl+D to exit):\n");
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1; // signal EOF
+}
+
 
 
 
