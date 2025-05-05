@@ -1,0 +1,49 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+// Keywords
+if              { printf("<KW, if>\n"); }
+then            { printf("<KW, then>\n"); }
+else            { printf("<KW, else>\n"); }
+
+// Relational Operators
+"<="            { printf("<LE, <= >\n"); }
+">="            { printf("<GE, >= >\n"); }
+"=="            { printf("<EQ, == >\n"); }
+"!="            { printf("<NE, != >\n"); }
+"<"             { printf("<LT, < >\n"); }
+">"             { printf("<GT, > >\n"); }
+
+// Numbers
+[0-9]+\.[0-9]+  { printf("<FLOAT, %s>\n", yytext); }
+[0-9]+          { printf("<INT, %s>\n", yytext); }
+
+// Identifiers
+[a-zA-Z_][a-zA-Z0-9_]*   { printf("<ID, %s>\n", yytext); }
+
+// Ignore whitespace and newline
+[ \t\n]+        { /* Ignore */ }
+
+// Any other character
+.               { printf("Unknown character: %s\n", yytext); }
+
+%%
+
+int yywrap(){return 1;}
+
+int main() {
+    yylex();
+    return 0;
+}
+
+
+
+if want input from textfile
+// flex filename.l
+gcc lex.yy.c -o objfilename
+./objfilename < textfilename
+
+
+otherwise run normally
