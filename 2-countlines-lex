@@ -1,0 +1,23 @@
+%{
+#include <stdio.h>
+int line_count = 0;
+int char_count = 0;
+%}
+
+%%
+\n          { line_count++; char_count++; }
+.           { char_count++; }
+%%
+
+int main() {
+    yylex();
+    printf("\nTotal lines: %d\n", line_count);
+    printf("Total characters: %d\n", char_count);
+    return 0;
+}
+
+
+
+lex filename.l
+gcc lex.yy.c
+./a.out
